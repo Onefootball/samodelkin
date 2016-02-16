@@ -44,9 +44,9 @@ func (r AppRevision) String() string {
 	return string(r)
 }
 
-// load reads REVISION file contents
+// Load reads REVISION file contents
 // and stores the value to the method receiver
-func (r *AppRevision) load() error {
+func (r *AppRevision) Load() error {
 	bl := fsloader.NewByteConfigLoader()
 
 	var b []byte
