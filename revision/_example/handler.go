@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/motain/samodelkin/revision"
+	"github.com/onefootball/samodelkin/revision"
 )
 
 func main() {

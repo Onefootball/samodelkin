@@ -20,7 +20,7 @@
 package revision
 
 import (
-	"github.com/motain/samodelkin/fsloader"
+	"github.com/onefootball/samodelkin/fsloader"
 )
 
 // revisionFile holds file name

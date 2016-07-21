@@ -3,7 +3,7 @@
 package gorpmock
 
 import (
-	"github.com/motain/gorp"
+	"github.com/go-gorp/gorp"
 )
 
 // DBMapMock is a struct type

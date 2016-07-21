@@ -3,7 +3,7 @@ package revision
 import (
 	"testing"
 
-	gc "github.com/motain/gocheck"
+	gc "github.com/go-check/check"
 )
 
 type RevisionTestSuite struct{}

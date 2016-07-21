@@ -3,7 +3,7 @@
 package amqpmock
 
 import (
-	"github.com/motain/amqp"
+	"github.com/streadway/amqp"
 )
 
 type MockAcknowledger struct {

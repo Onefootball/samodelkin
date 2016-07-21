@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	gc "github.com/motain/gocheck"
+	gc "github.com/go-check/check"
 )
 
 type FSLoaderTestSuite struct{}
