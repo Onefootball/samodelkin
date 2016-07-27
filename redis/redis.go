@@ -16,6 +16,7 @@ type (
 	// pool configurations
 	RedisConfig struct {
 		Host           string
+		Password       string
 		Port           int
 		MaxIdleConns   int
 		MaxActiveConns int
@@ -127,12 +128,20 @@ func newPool(cfg RedisConfig) *redis.Pool {
 // redis connection
 func dialFunc(cfg RedisConfig) func() (redis.Conn, error) {
 	return func() (redis.Conn, error) {
-		return redis.DialTimeout(
+		redisConn, err := redis.DialTimeout(
 			"tcp",
 			cfg.Address(),
 			cfg.ConnectTimeout,
 			cfg.ReadTimeout,
 			cfg.WriteTimeout,
 		)
+
+		if len(cfg.Password) > 0 && err == nil {
+			if _, err := redis.String(redisConn.Do("AUTH", cfg.Password)); err != nil {
+				return redisConn, err
+			}
+		}
+
+		return redisConn, err
 	}
 }
