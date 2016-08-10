@@ -1,3 +1,5 @@
+// Package mq provides an abstraction
+// for handling amqp connection logic
 package mq
 
 import (
@@ -56,6 +58,7 @@ type (
 	}
 )
 
+// NewAMQPConnector returns a new instance of AMQPConnector
 func NewAMQPConnector(cfg *RabbitMQConfig, logger *log.Logger) *AMQPConnector {
 	return &AMQPConnector{cfg, logger}
 }
@@ -84,6 +87,8 @@ func (f AMQPConnector) Channel() (*amqp.Channel, error) {
 	return amqpChannel, nil
 }
 
+// Consume receives a list of AMQPHandler implementations and create
+// the instances of the AMQPConsumer using the amqpChannel
 func (f AMQPConnector) Consume(amqpChannel *amqp.Channel, handlers map[string]AMQPHandler) error {
 	for _, consumerCfg := range f.rabbitConfig.Consumers {
 		mqHandler, ok := handlers[consumerCfg.ID]
@@ -130,7 +135,7 @@ func (f AMQPConnector) dial() (c *amqp.Connection, ch *amqp.Channel, err error) 
 	return
 }
 
-// dialAMQPOnce dials an amqp server under
+// dialOnce dials an amqp server under
 // the provided URL
 func (f AMQPConnector) dialOnce() (*amqp.Connection, *amqp.Channel, error) {
 	c, err := amqp.Dial(f.rabbitConfig.Connection.String())
