@@ -36,7 +36,6 @@ type (
 		AMQPChannel *amqp.Channel
 		Queue       string
 		Tag         string
-		done        chan bool
 		logger      *log.Logger
 	}
 )
@@ -49,7 +48,6 @@ func NewAMQPConsumer(h AMQPHandler, ch *amqp.Channel, logger *log.Logger, queue,
 		AMQPChannel: ch,
 		Queue:       queue,
 		Tag:         tag,
-		done:        make(chan bool),
 		logger:      logger,
 	}
 }
@@ -77,8 +75,6 @@ func (c *AMQPConsumer) Consume() error {
 				c.logger.Println(err)
 			}
 		}
-
-		c.done <- true
 	}(deliveries)
 
 	return nil
