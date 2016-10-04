@@ -29,6 +29,7 @@ type (
 		Attempts        int    `json:"attempts"`
 		ErrLogEnable    bool   `json:"error_log_enable"`
 		ReturnLogEnable bool   `json:"return_log_enable"`
+		PrefetchCount 	int    `json:"prefetch_count"`
 	}
 
 	// RabbitMQConsumer desribes a rabbitmq consumer config
@@ -67,6 +68,12 @@ func (f AMQPConnector) Channel() (*amqp.Channel, error) {
 	_, amqpChannel, err := f.dial()
 	if err != nil {
 		return nil, err
+	}
+
+	if f.rabbitConfig.Connection.PrefetchCount > 0 {
+		if err := amqpChannel.Qos(f.rabbitConfig.Connection.PrefetchCount, 0, false); err != nil {
+			return nil, err
+		}
 	}
 
 	if f.rabbitConfig.Connection.ErrLogEnable {
