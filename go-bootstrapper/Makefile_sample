@@ -1,0 +1,45 @@
+.PHONY: all deps test build clean version
+
+GO ?= go
+COPY ?= cp
+ECHO ?= echo
+
+PACKAGE_NAME=app.bz2
+BIN_FOLDER=bin
+BIN_NAME=myproject
+REVISION_NAME=REVISION
+IMPORT_PATH=github.com/me/myproject
+
+all: build test
+
+deps:
+#    git config --global url.git@github.com:Onefootball.insteadOf https://github.com/Onefootball
+#    ${GO} get -u github.com/go-sql-driver/mysql
+
+build: deps
+build: version
+build:
+    ${GO} build -o bin/${BIN_NAME}
+
+    @if test -n "${BRANCH}"; then \
+    if test "${BRANCH}" = "develop"; then \
+    ${COPY} ${GOPATH}/src/${IMPORT_PATH}/config.json.staging bin/config.json; \
+    else \
+    ${COPY} ${GOPATH}/src/${IMPORT_PATH}/config.json.prod bin/config.json; \
+    fi; \
+    fi;
+
+    ${COPY} ${GOPATH}/src/${IMPORT_PATH}/${REVISION_NAME} bin/
+    cd bin && tar -jcf ../app.bz2 * && cd ..
+
+test: deps
+test: version
+test:
+    ${GO} test ./... -v
+
+version:
+    ${ECHO} `git log -n 1 --pretty=format:"%H"` > ${REVISION_NAME}
+
+clean:
+    @rm -rf ${BIN_FOLDER}
+    @rm ${PACKAGE_NAME}
