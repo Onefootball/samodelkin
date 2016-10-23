@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	ServiceLogPrefix = "[ARTHUR]: "
+	ServiceLogPrefix = "[TEST]: "
 )
 
 type (
